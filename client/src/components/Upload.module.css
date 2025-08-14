@@ -1,0 +1,12 @@
+img {
+    width: 150px;
+    height: auto;
+    margin: 5px;
+}
+
+.styleUpload {
+    display: inline-block;    /* Faz a div se ajustar ao conteúdo */
+    padding: 10px;    /* Opcional: adiciona espaço interno */
+    border: 1px solid #000;    /* Opcional: borda para visualização */
+    background-color: rgb(217, 217, 217);
+}

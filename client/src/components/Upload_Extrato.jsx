@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState } from 'react';
+import styles from './Upload.module.css'
 
 function Upload_Extrato() {
 
@@ -18,11 +19,13 @@ function Upload_Extrato() {
     return (
         <div className='container'>
             <form onSubmit={uploadImg}>
-                <label>Upload extrato</label>
-                <input type="file" name="image" onChange={(e) => setUpload(e.target.files[0])} />
-
-                <div>
-                    <button type='submit'>Salvar</button>
+                <div className={styles.styleUpload}>
+                    <label>Upload extrato</label>
+                    <img src="/upload_arquivo.png" alt="" />
+                    <input type="file" name="image" onChange={(e) => setUpload(e.target.files[0])} />
+                    <div>
+                        <button type='submit'>Salvar</button>
+                    </div>
                 </div>
             </form>
 
