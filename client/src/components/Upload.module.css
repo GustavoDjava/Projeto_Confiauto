@@ -25,7 +25,7 @@ label {
 
 
 
-
+/* modelo do css para o comprovante de pagamento */
 
 .uploadContainer {
   display: flex;
@@ -66,4 +66,13 @@ label {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+}
+
+.uploadWrapper {
+  max-width: 400px; /* Limita a largura */
+  margin: 40px auto; /* Centraliza vertical e horizontalmente */
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }

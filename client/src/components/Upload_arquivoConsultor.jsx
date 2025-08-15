@@ -6,20 +6,40 @@ function Upload_arquivoConsultor() {
 
     const [uploadVenda, setUploadVenda] = useState("");
 
+    const handleFileChange = (event) => {
+        const file = event.targe.files[0];
+        if (file) {
+            setUploadVenda(file.name);
+        }
+    }
+
+
     return (
         <div className='container'>
-            <form>
-                <div>
-                    <label>Venda dos consultores </label>
-                    <div className={styles.styleUpload}>  
-                        <img src="/upload_arquivo.png" alt="" />
+            <div className={styles.uploadWrapper}>
+                <form>
+                    <div className={styles.uploadContainer}>
+                        <label htmlFor="comprovante" className={styles.label}>
+                            Venda dos consultores
+                        </label>
+
+                        <label htmlFor="comprovante" className={styles.customUpload}>
+                            <img src="/upload_arquivo.png" alt="ícone de upload" />
+                            <span>{uploadVenda || "Escolher arquivo..." }</span>
+                        </label>
+
+                        <input type="file"
+                        id="comprovante"
+                        name= "comprovante"
+                        onChange={handleFileChange}
+                        className={styles.hiddenInput}
+                        />
+
+                        <button type="submit" className={styles.button}>Salvar</button>
+                        
                     </div>
-                    <input type="file" name="image" />
-                    <div>
-                        <button type='submit'>Salvar</button>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     )
 }
