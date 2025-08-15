@@ -8,10 +8,12 @@ function Upload_arquivoConsultor() {
 
     return (
         <div className='container'>
-            <form >
-                <div className={styles.styleUpload}>
+            <form>
+                <div>
                     <label>Venda dos consultores </label>
-                    <img src="/upload_arquivo.png" alt="" />
+                    <div className={styles.styleUpload}>  
+                        <img src="/upload_arquivo.png" alt="" />
+                    </div>
                     <input type="file" name="image" />
                     <div>
                         <button type='submit'>Salvar</button>

@@ -19,9 +19,11 @@ function Upload_Extrato() {
     return (
         <div className='container'>
             <form onSubmit={uploadImg}>
-                <div className={styles.styleUpload}>
+                <div>
                     <label>Upload extrato</label>
-                    <img src="/upload_arquivo.png" alt="" />
+                    <div className={styles.styleUpload}>
+                        <img src="/upload_arquivo.png" alt="" />
+                    </div>
                     <input type="file" name="image" onChange={(e) => setUpload(e.target.files[0])} />
                     <div>
                         <button type='submit'>Salvar</button>

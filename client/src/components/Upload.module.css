@@ -1,3 +1,7 @@
+container {
+    display: flex;
+}
+
 img {
     width: 150px;
     height: auto;
@@ -5,8 +9,61 @@ img {
 }
 
 .styleUpload {
+    display: flex;
     display: inline-block;    /* Faz a div se ajustar ao conteúdo */
     padding: 10px;    /* Opcional: adiciona espaço interno */
     border: 1px solid #000;    /* Opcional: borda para visualização */
     background-color: rgb(217, 217, 217);
+}
+
+label {
+  /* font-weight: bold; */
+  display: block;
+  margin-bottom: 4px;
+}
+
+
+
+
+
+
+.uploadContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.label {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.customUpload {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  background-color: #f0f0f0;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.customUpload img {
+  width: 24px;
+  height: 24px;
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.button {
+  margin-top: 16px;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
