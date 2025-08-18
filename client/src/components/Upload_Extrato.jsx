@@ -30,7 +30,7 @@ function Upload_Extrato() {
                 <form onSubmit={uploadImg}>
                     <div className={styles.uploadContainer}>
                         <label htmlFor="extrato" className={styles.label}>
-                            Vendas dos consultores
+                            Extrato
                         </label>
 
                         <label htmlFor="extrato" className={styles.customUpload}>
