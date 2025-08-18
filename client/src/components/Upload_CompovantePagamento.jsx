@@ -7,19 +7,27 @@ function Upload_CompovantePagamento() {
 
   const [uploadComprovante, setUploadCompovante] = useState("");
 
-  const handleFileChange = (event) => {
+  const handleFileChange_Comprovante = (event) => {
     const file = event.target.files[0];
     if (file) {
       setUploadCompovante(file.name);
+      console.log("Comprovante de pagamento anexado")
     }
   };
 
+  //Executar a função quando o usuário clicar no botão do from
+  const upload_Img_Comprovante = async (e) => {
+
+    e.preventDefault();
+
+    console.log("Upload funcionando")
+  }
 
   return (
     <div>
       <div className='container'>
         <div className={styles.uploadWrapper}>
-          <form>
+          <form onSubmit={upload_Img_Comprovante}>
             <div className={styles.uploadContainer}>
               <label htmlFor='comprovante' className={styles.label}>
                 Upload comprovante de pagamento
@@ -33,7 +41,7 @@ function Upload_CompovantePagamento() {
               <input type="file"
                 id='comprovante'
                 name="comprovante"
-                onChange={handleFileChange}
+                onChange={handleFileChange_Comprovante}
                 className={styles.hiddenInput}
               />
 
