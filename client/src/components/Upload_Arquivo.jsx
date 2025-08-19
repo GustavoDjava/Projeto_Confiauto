@@ -2,13 +2,18 @@ import React, { useState } from 'react';
 import styles from './Upload.module.css';
 import NavBar from './NavBar';
 
-function Upload_Extrato() {
+function Upload_Arqivo() {
   // 🗂️ Estado para armazenar arquivos por campo
   const [filesByField, setFilesByField] = useState({
     extrato: [],
     comprovante: [],
     consultor: [],
   });
+
+  // const para alerta
+  const [uploadMessage, setUplaodMessage] = useState('');
+
+
 
   // 📥 Função para lidar com seleção de arquivos
   const handleFileChange = (event, fieldName) => {
@@ -32,17 +37,20 @@ function Upload_Extrato() {
     });
 
     try {
-      const response = await fetch("colocar rota", {
+      const response = await fetch("http://localhost:5000/analisar", {
         method: 'POST',
         body: formData,
       });
 
       if (response.ok) {
+        setUplaodMessage('Arquivos enviado com sucesso')
         console.log("Upload bem-sucedido");
       } else {
+        setUplaodMessage('Erro ao enviar os arquivos.')
         console.error("Erro no upload");
       }
     } catch (error) {
+      setUplaodMessage('Falha na conexão com o servidor')
       console.error("Erro ao enviar arquivo:", error);
     }
   };
@@ -116,4 +124,4 @@ function Upload_Extrato() {
   );
 }
 
-export default Upload_Extrato;
+export default Upload_Arqivo;

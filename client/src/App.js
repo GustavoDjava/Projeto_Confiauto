@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import Login from './pages/Login'
-import Upload_Arquivo from './components/Upload_Arquivo';
 
 
 function App() {
@@ -10,7 +9,6 @@ function App() {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />
-          <Route path='/teste' element={<Upload_Arquivo />} />
         </Routes>
       </BrowserRouter>
   );

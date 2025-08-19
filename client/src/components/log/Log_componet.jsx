@@ -10,7 +10,7 @@ function Log() {
       <div className={styles.formStyles}>
 
         <div className={styles.whiteColor}>
-          <img src="/logoConfiauto.png" alt="" />
+          {/* <img src="/logoConfiauto.png" alt="" /> */}
         </div>
 
         <div className={styles.whiteColor}>
