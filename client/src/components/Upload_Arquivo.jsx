@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import styles from './Upload.module.css';
 import NavBar from './NavBar';
+import { validarArquivos } from './fileValidation';
+
 
 function Upload_Arqivo() {
   // 🗂️ Estado para armazenar arquivos por campo
@@ -14,18 +16,40 @@ function Upload_Arqivo() {
   const [uploadMessage, setUplaodMessage] = useState('');
 
 
-
-  // 📥 Função para lidar com seleção de arquivos
-  const handleFileChange = (event, fieldName) => {
+  const handleFileChange = (event, fileName) => {
     const selectedFiles = Array.from(event.target.files);
+    const { arquivosValidos, mensagensErro } = validarArquivos(selectedFiles);
+
+    if (mensagensErro.length > 0) {
+      setUplaodMessage(mensagensErro.join("\n"));
+      alert(mensagensErro.join("\n"))
+
+    } else {
+      setUplaodMessage(""); //limpa a mensagem se não houver erro
+    }
+
     setFilesByField(prev => ({
       ...prev,
-      [fieldName]: selectedFiles,
+      [fileName]: arquivosValidos,
     }));
-    console.log(`Arquivos anexados em ${fieldName}:`, selectedFiles.map(f => f.name));
-  };
 
-  // 🚀 Função para enviar os arquivos
+    console.log(`Arquivos válidos em ${fileName}:`, arquivosValidos.map(f => f.name));
+  }
+
+
+
+  //  Função para lidar com seleção de arquivos
+  // const handleFileChange = (event, fieldName) => {
+  //   const selectedFiles = Array.from(event.target.files);
+  //   setFilesByField(prev => ({
+  //     ...prev,
+  //     [fieldName]: selectedFiles,
+  //   }));
+  //   console.log(`Arquivos anexados em ${fieldName}:`, selectedFiles.map(f => f.name));
+  // };
+
+
+  //  Função para enviar os arquivos
   const uploadImg = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -43,6 +67,8 @@ function Upload_Arqivo() {
       });
 
       if (response.ok) {
+        const data = await response.json(); // 👈 Aqui você pega o JSON
+        console.log("Resposta do backend:", data); // 👀 Mostra no console
         setUplaodMessage('Arquivos enviado com sucesso')
         console.log("Upload bem-sucedido");
       } else {
@@ -55,7 +81,8 @@ function Upload_Arqivo() {
     }
   };
 
-  // 🧱 Função para renderizar campos de upload com cor verde e ícone de check
+
+  //  Função para renderizar campos de upload com cor verde e ícone de check
   const renderUploadField = (label, fieldName) => {
     const hasFiles = filesByField[fieldName].length > 0;
 
@@ -89,6 +116,7 @@ function Upload_Arqivo() {
           onChange={(e) => handleFileChange(e, fieldName)}
           className={styles.hiddenInput}
         />
+        
       </div>
     );
   };
@@ -116,6 +144,16 @@ function Upload_Arqivo() {
               >
                 Cancelar
               </button>
+
+
+              {/* Alertas */}
+
+              {/* {uploadMessage && (
+                <div className={styles.uploadMessage}>
+                  {uploadMessage}
+                </div>
+              )} */}
+
             </div>
           </form>
         </div>

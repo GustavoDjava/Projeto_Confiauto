@@ -147,3 +147,14 @@ label {
   height: 20px;
 }
 
+/* message de retorno do servidor */
+.uploadMessage {
+  margin-top: 10px;
+  font-weight: bold;
+  color: #28a745; /* verde para sucesso */
+}
+
+.uploadMessage:has(.error) {
+  color: #dc3545; /* vermelho para erro */
+}
+
