@@ -115,6 +115,7 @@ function Upload_Arqivo() {
           multiple
           onChange={(e) => handleFileChange(e, fieldName)}
           className={styles.hiddenInput}
+          {...(fieldName === "comprovante" && {webkitdirectory: "true"})}
         />
         
       </div>
