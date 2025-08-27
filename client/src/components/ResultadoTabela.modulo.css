@@ -1,0 +1,17 @@
+.resultadosWrapper {
+  margin-top: 2rem;
+  padding: 1rem;
+}
+
+.categoriaSection {
+  margin-bottom: 2rem;
+}
+
+.resultCard {
+  border: 1px solid #ccc;
+  padding: 1rem;
+  margin-top: 1rem;
+  border-radius: 8px;
+  background-color: #fefefe;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}

@@ -3,6 +3,7 @@ from werkzeug.utils import secure_filename
 from services.pdf_service import process_pdf
 from services.image_service import process_image
 from services.excel_service import process_excel
+# import shutil
 
 analisar_bp = Blueprint('analisar', __name__)
 
@@ -38,6 +39,7 @@ def analisar():
 
     # Adicionando a linha para imprimir a mensagem no console
     print("Arquivos analisados com sucesso!")
+    # shutil.rmtree(upload_folder, ignore_errors=True) apagar a pasta depois de analisar
     
     return jsonify({
         "mensagem": "Arquivos analisados com sucesso!",

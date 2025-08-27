@@ -19,7 +19,7 @@ function AnalisarData() {
   return (
     <div style={{ padding: "2rem" }}>
       <h2>Upload de Arquivo</h2>
-      <input type="file" onChange={handleUpload} />
+      <input type="file" onChange={handleUpload} /> 
 
       {resultados && (
         <div style={{ marginTop: "2rem" }}>

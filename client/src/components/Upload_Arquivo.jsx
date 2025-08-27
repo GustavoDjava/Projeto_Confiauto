@@ -2,15 +2,19 @@ import React, { useState } from 'react';
 import styles from './Upload.module.css';
 import NavBar from './NavBar';
 import { validarArquivos } from './fileValidation';
-
+import ResultadoTabela from './ResultadosTabela';
 
 function Upload_Arqivo() {
-  // 🗂️ Estado para armazenar arquivos por campo
+  // 🗂️Estado para armazenar arquivos por campo
   const [filesByField, setFilesByField] = useState({
     extrato: [],
     comprovante: [],
     consultor: [],
   });
+
+  //📁 const para armazenar Json do backend
+  const [resultados, setResultados] = useState(null);
+
 
   // const para alerta
   const [uploadMessage, setUplaodMessage] = useState('');
@@ -61,22 +65,22 @@ function Upload_Arqivo() {
     });
 
     try {
-      const response = await fetch("http://localhost:5000/analisar", {
+      const response = await fetch("http://localhost:5000/api/analisar", {
         method: 'POST',
         body: formData,
       });
 
       if (response.ok) {
-        const data = await response.json(); // 👈 Aqui você pega o JSON
-        console.log("Resposta do backend:", data); // 👀 Mostra no console
-        setUplaodMessage('Arquivos enviado com sucesso')
-        console.log("Upload bem-sucedido");
+        const data = await response.json();
+        setResultados(data.resultados); // 👈 Atualiza os dados extraídos
+        setUplaodMessage('Arquivos enviados com sucesso');
+        console.log("Resposta do backend:", data);
       } else {
-        setUplaodMessage('Erro ao enviar os arquivos.')
+        setUplaodMessage('Erro ao enviar os arquivos.');
         console.error("Erro no upload");
       }
     } catch (error) {
-      setUplaodMessage('Falha na conexão com o servidor')
+      setUplaodMessage('Falha na conexão com o servidor');
       console.error("Erro ao enviar arquivo:", error);
     }
   };
@@ -115,9 +119,9 @@ function Upload_Arqivo() {
           multiple
           onChange={(e) => handleFileChange(e, fieldName)}
           className={styles.hiddenInput}
-          {...(fieldName === "comprovante" && {webkitdirectory: "true"})}
+          {...(fieldName === "comprovante" && { webkitdirectory: "true" })}
         />
-        
+
       </div>
     );
   };
@@ -149,15 +153,16 @@ function Upload_Arqivo() {
 
               {/* Alertas */}
 
-              {/* {uploadMessage && (
+              {uploadMessage && (
                 <div className={styles.uploadMessage}>
                   {uploadMessage}
                 </div>
-              )} */}
+              )}
 
             </div>
           </form>
         </div>
+        <ResultadoTabela resultados={resultados} />
       </div>
     </>
   );
