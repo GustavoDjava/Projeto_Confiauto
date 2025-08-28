@@ -14,8 +14,6 @@ function Upload_Arqivo() {
 
   //📁 const para armazenar Json do backend
   const [resultados, setResultados] = useState(null);
-
-
   // const para alerta
   const [uploadMessage, setUplaodMessage] = useState('');
 
@@ -39,18 +37,6 @@ function Upload_Arqivo() {
 
     console.log(`Arquivos válidos em ${fileName}:`, arquivosValidos.map(f => f.name));
   }
-
-
-
-  //  Função para lidar com seleção de arquivos
-  // const handleFileChange = (event, fieldName) => {
-  //   const selectedFiles = Array.from(event.target.files);
-  //   setFilesByField(prev => ({
-  //     ...prev,
-  //     [fieldName]: selectedFiles,
-  //   }));
-  //   console.log(`Arquivos anexados em ${fieldName}:`, selectedFiles.map(f => f.name));
-  // };
 
 
   //  Função para enviar os arquivos
@@ -129,40 +115,59 @@ function Upload_Arqivo() {
   return (
     <>
       <NavBar />
-      <div className="container">
-        <div className={styles.uploadWrapper}>
-          <form onSubmit={uploadImg}>
-            {renderUploadField("Extrato", "extrato")}
-            {renderUploadField("Comprovante Pagamento", "comprovante")}
-            {renderUploadField("Associados Consultor", "consultor")}
+      <div className='container'>
+        {/* 👇 Só exibe o formulário se ainda não houver resultados */}
+        {!resultados && (
+          <div className={styles.uploadWrapper}>
+            <form onSubmit={uploadImg}>
+              {renderUploadField("Extrato", "extrato")}
+              {renderUploadField("Comprovante Pagamento", "comprovante")}
+              {renderUploadField("Associados Consultor", "consultor")}
 
-            <div className={styles.buttonGroup}>
-              <button type="submit" className={styles.button}>Salvar</button>
-              <button
-                type="button"
-                className={`${styles.button} ${styles.cancelButton}`}
-                onClick={() => setFilesByField({
+              <div className={styles.buttonGroup}>
+                <button type='submit' className={styles.button}>Salvar</button>
+                <button
+                  type='button'
+                  className={`${styles.button} ${styles.cancelButton}`}
+                  onClick={() => setFilesByField({
+                    extrato: [],
+                    comprovante: [],
+                    consultor: [],
+                  })}
+                >
+                  Cancelar
+                </button>
+
+                {uploadMessage && (
+                  <div className={styles.uploadMessage}>{uploadMessage}
+                  </div>
+                )}
+              </div>
+            </form>
+          </div>
+        )}
+
+        {/* 👇 Exibe os resultados quando disponíveis */}
+        {resultados && (
+          <>
+            <ResultadoTabela resultados={resultados} />
+            <button
+              className={styles.button}
+              onClick={() => {
+                setResultados(null); // limpa os resultados
+                setFilesByField({
                   extrato: [],
                   comprovante: [],
                   consultor: [],
-                })}
-              >
-                Cancelar
-              </button>
+                }); // limpa os arquivos
+                setUplaodMessage(''); // limpa a mensagem
+              }}
+            >
+              Novo envio
+            </button>
+          </>
+        )}
 
-
-              {/* Alertas */}
-
-              {uploadMessage && (
-                <div className={styles.uploadMessage}>
-                  {uploadMessage}
-                </div>
-              )}
-
-            </div>
-          </form>
-        </div>
-        <ResultadoTabela resultados={resultados} />
       </div>
     </>
   );
