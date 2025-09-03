@@ -12,6 +12,7 @@ def analisar():
     resultados = {}
     arquivos_salvos = []  # Lista para armazenar caminhos dos arquivos salvos
 
+    # 1️⃣ Etapa 1: salvar todos os arquivos
     for campo in ['extrato', 'comprovante', 'consultor']:
         i = 0
         resultados[campo] = []
@@ -21,26 +22,29 @@ def analisar():
             filename = secure_filename(file.filename)
             caminho = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
             file.save(caminho)
-            arquivos_salvos.append(caminho)  # Salva o caminho para apagar depois
-
-            if filename.lower().endswith('.pdf'):
-                resultado = process_pdf(caminho, filename)
-            elif filename.lower().endswith(('.png', '.jpg', '.jpeg')):
-                resultado = process_image(caminho, filename)
-            elif filename.lower().endswith(('.xls', '.xlsx')):
-                resultado = process_excel(caminho, filename)
-            else:
-                resultado = {
-                    "arquivo": filename,
-                    "tipo": "Desconhecido",
-                    "mensagem": "Formato não suportado"
-                }
-
-            resultados[campo].append(resultado)
+            arquivos_salvos.append((campo, caminho, filename))  # Salva o caminho para apagar depois
             i += 1
 
-    # Apaga os arquivos após o processamento
-    for caminho in arquivos_salvos:
+
+    # 2️⃣ Etapa 2: processar todos os arquivos
+    for campo, caminho, filename in arquivos_salvos:
+        if filename.lower().endswith('.pdf'):
+            resultado = process_pdf(caminho, filename)
+        elif filename.lower().endswith(('.png', '.jpg', '.jpeg')):
+            resultado = process_image(caminho, filename)
+        elif filename.lower().endswith(('.xls', '.xlsx')):
+            resultado = process_excel(caminho, filename)
+        else:
+            resultado = {
+                "arquivo": filename,
+                "tipo": "Desconhecido",
+                "mensagem": "Formato não suportado"
+            }
+
+        resultados[campo].append(resultado)
+
+   # 3️⃣ Etapa 3: apagar todos os arquivos
+    for _, caminho, _ in arquivos_salvos:
         try:
             os.remove(caminho)
         except Exception as e:
