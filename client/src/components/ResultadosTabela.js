@@ -1,5 +1,6 @@
 import React from 'react';
-import styles from './ResultadoTabela.modulo.css';
+import styles from './ResultadoTabela.css'
+import TabelaExcel from './TabelaExcel';
 
 function ResultadoTabela({ resultados }) {
   if (!resultados) return null;

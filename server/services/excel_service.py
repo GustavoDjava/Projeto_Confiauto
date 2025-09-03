@@ -24,7 +24,7 @@ def process_excel(caminho, filename):
         return {
             "arquivo": filename,
             "tipo": "Excel",
-            "linhas": df.to_dict(orient="records"),
+            "linhas": df.to_dict(orient="records"), #retornar as linhas que o front vai receber
             "agrupado_por_consultor": agrupado
         }
     except Exception as e:

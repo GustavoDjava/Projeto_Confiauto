@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import styles from './Upload.module.css';
+import styles from './Upload.module.css'
 import NavBar from './NavBar';
 import { validarArquivos } from './fileValidation';
-import ResultadoTabela from './ResultadosTabela';
+import ResultadoTabela from './ResultadoTabela.css';
 
 function Upload_Arqivo() {
   // 🗂️Estado para armazenar arquivos por campo
