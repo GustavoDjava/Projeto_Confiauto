@@ -1,10 +1,13 @@
 import React from 'react';
-import styles from './ResultadoTabela.modules.css'
+import styles from './TabelaExcel.module.css';
 
 function TabelaExcel({ linhas }) {
   if (!linhas || linhas.length === 0) return null;
 
+  if (!linhas || linhas.length === 0 || !linhas[0]) return null;
+
   const colunas = Object.keys(linhas[0]);
+
 
   return (
     <div className={styles.resultCard}>

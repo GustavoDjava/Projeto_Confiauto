@@ -12,23 +12,26 @@ def process_excel(caminho, filename):
     try:
         df = pd.read_excel(caminho)
         df = df.where(pd.notnull(df), None)  # Substitui NaN por None
-        print("📊 Colunas do Excel:", df.columns.tolist())
+
+        # 🔧 Normaliza os nomes das colunas para evitar erros por capitalização ou espaços
+        df.columns = df.columns.str.strip().str.lower()
+        print("📊 Colunas normalizadas:", df.columns.tolist())
 
         # Tenta agrupar por consultor, se possível
         try:
             agrupado = processar_por_consultor(df)
         except Exception as e:
-            print(" Erro ao agrupar por consultor:", e)
+            print("❌ Erro ao agrupar por consultor:", e)
             agrupado = {"erro": f"Falha ao agrupar por consultor: {str(e)}"}
 
         return {
             "arquivo": filename,
             "tipo": "Excel",
-            "linhas": df.to_dict(orient="records"), #retornar as linhas que o front vai receber
+            "linhas": df.to_dict(orient="records"),
             "agrupado_por_consultor": agrupado
         }
     except Exception as e:
-        print(" Erro ao analisar arquivo Excel:", filename)
+        print("❌ Erro ao analisar arquivo Excel:", filename)
         return {"arquivo": filename, "erro": str(e)}
 
 # ✅ Função para extrair informações de texto usando regex e NLP
@@ -59,10 +62,30 @@ def extrair_info_texto(texto):
     return {**regex_info, **entidades}
 
 # ✅ Função para agrupar informações extraídas por consultor
-def processar_por_consultor(df, coluna_consultor="Consultor", coluna_associado="Nome do associado"):
-    print("Analisando consultores")
-    if coluna_consultor not in df.columns or coluna_associado not in df.columns:
-        raise ValueError("Colunas especificadas não existem no arquivo.")
+def encontrar_coluna(df, termo):
+    for col in df.columns:
+        if termo.lower() in col.lower():
+            return col
+    return None
+
+def encontar_coluna(df, termo):
+    for col in df.columns:
+        if termo.lower() in col.lower(): # lower é um método para deixar as letras minuscu.
+            return col
+    return None
+
+def encontrar_coluna(df, termo):
+    for col in df.columns:
+        if termo.lower() in col.lower():
+            return col
+    return None
+
+def processar_por_consultor(df):
+    coluna_consultor = encontrar_coluna(df, "consultor")
+    coluna_associado = encontrar_coluna(df, "associado")
+
+    if not coluna_consultor or not coluna_associado:
+        raise ValueError(f"Colunas relacionadas a 'consultor' ou 'associado' não foram encontradas. Colunas disponíveis: {df.columns.tolist()}")
 
     agrupado = defaultdict(list)
 
