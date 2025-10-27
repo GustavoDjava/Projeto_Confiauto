@@ -4,14 +4,14 @@ Sistema de controle e verificação de pagamentos automotivos, desenvolvido com 
 
 📖 Sobre o Projeto
 
-O Confiauto é um sistema web voltado para o gerenciamento financeiro de associações automotivas.
+O projeto é uma solução web voltado para o gerenciamento financeiro de associações automotivas.
 Ele permite que o administrador/gerente visualize os pagamentos realizados pelos associados, verifique se os valores realmente caíram no extrato da empresa e identifique quais associados estão pendentes em relação aos consultores responsáveis.
 
-O projeto foi desenvolvido com fins acadêmicos e para demonstração prática de integração entre backend Flask e frontend React.
+O projeto foi desenvolvido baseado em uma demanda real de uma gerente de vendas, que fazia esta análise manualmente.
 
 🧠 Objetivo Principal
 
-Centralizar a análise de pagamentos de associados e facilitar a verificação de repasses entre empresa, consultores e clientes.
+Centralizar a análise de pagamentos de associados e facilitar a verificação de repasses entre empresa, consultores e clientes. 
 
 ⚙️ Tecnologias Utilizadas
 
@@ -151,11 +151,13 @@ Exemplo:
 👨‍💻 Autor
 
 Gustavo Dias
-📧 gustavodjava@gmail.com
+📧 gustavosantana.programador@outlook.com
 
-💼 LinkedIn
+💼 LinkedIn 
+www.linkedin.com/in/gustavo-dias-santana-4798a3262
 
 🐙 GitHub
+https://github.com/GustavoDjava
 
 🏷️ Licença
 
