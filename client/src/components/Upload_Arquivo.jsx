@@ -5,26 +5,34 @@ import { validarArquivos } from './fileValidation';
 import ResultadoTabela from './ResultadosTabela';
 
 function Upload_Arquivo() {
+  // Armazena os arquivos selecionados para cada tipo
   const [filesByField, setFilesByField] = useState({
     extrato: [],
     comprovante: [],
     consultor: [],
   });
 
-  const [resultados, setResultados] = useState(null);
-  const [uploadMessage, setUplaodMessage] = useState('');
-  const [abaAtiva, setAbaAtiva] = useState("extrato");
+  const [resultados, setResultados] = useState(null); //Guarda os dados retornados pelo backend após o upload
+  const [uploadMessage, setUplaodMessage] = useState(''); // Exibi a mensagem de erro ou sucesso
+  const [abaAtiva, setAbaAtiva] = useState("extrato"); // Control qual aba de resultado está visível
 
-  const handleFileChange = (event, fileName) => {
-    const selectedFiles = Array.from(event.target.files);
+
+  const handleFileChange = (event, fileName) => { 
+    const selectedFiles = Array.from(event.target.files); // converter objeto interável em um array
     const { arquivosValidos, mensagensErro } = validarArquivos(selectedFiles);
 
-    if (mensagensErro.length > 0) {
+    if (Array.isArray(mensagensErro) && mensagensErro.length > 0) {
       setUplaodMessage(mensagensErro.join("\n"));
       alert(mensagensErro.join("\n"));
-    } else {
+    }else{
       setUplaodMessage("");
     }
+    // if (mensagensErro.length > 0) {
+    //   setUplaodMessage(mensagensErro.join("\n"));
+    //   alert(mensagensErro.join("\n"));
+    // } else {
+    //   setUplaodMessage("");
+    // }
 
     setFilesByField(prev => ({
       ...prev,
@@ -34,6 +42,7 @@ function Upload_Arquivo() {
     console.log(`Arquivos válidos em ${fileName}:`, arquivosValidos.map(f => f.name));
   };
 
+  //API para enviar arquivos para o banckend
   const uploadImg = async (e) => {
     e.preventDefault();
     const formData = new FormData();
