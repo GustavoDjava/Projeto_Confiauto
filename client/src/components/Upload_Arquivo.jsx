@@ -110,6 +110,7 @@ function Upload_Arquivo() {
     );
   };
 
+// Renderização do componente 
   return (
     <>
       <NavBar />
@@ -146,7 +147,7 @@ function Upload_Arquivo() {
         {resultados && (
           <>
             <div className={styles.tabBar}>
-              {["extrato", "comprovante", "consultor"].map((tipo) => (
+              {["extrato", "pendente", "consultor"].map((tipo) => (
                 <button
                   key={tipo}
                   className={`${styles.tabButton} ${abaAtiva === tipo ? styles.active : ""}`}
