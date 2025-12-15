@@ -4,31 +4,35 @@ import NavBar from './NavBar';
 import { validarArquivos } from './fileValidation';
 import ResultadoTabela from './ResultadosTabela';
 
-function Upload_Arqivo() {
-  // 🗂️Estado para armazenar arquivos por campo
+function Upload_Arquivo() {
+  // Armazena os arquivos selecionados para cada tipo
   const [filesByField, setFilesByField] = useState({
     extrato: [],
     comprovante: [],
     consultor: [],
   });
 
-  //📁 const para armazenar Json do backend
-  const [resultados, setResultados] = useState(null);
-  // const para alerta
-  const [uploadMessage, setUplaodMessage] = useState('');
+  const [resultados, setResultados] = useState(null); //Guarda os dados retornados pelo backend após o upload
+  const [uploadMessage, setUplaodMessage] = useState(''); // Exibi a mensagem de erro ou sucesso
+  const [abaAtiva, setAbaAtiva] = useState("extrato"); // Control qual aba de resultado está visível
 
 
-  const handleFileChange = (event, fileName) => {
-    const selectedFiles = Array.from(event.target.files);
+  const handleFileChange = (event, fileName) => { 
+    const selectedFiles = Array.from(event.target.files); // converter objeto interável em um array
     const { arquivosValidos, mensagensErro } = validarArquivos(selectedFiles);
 
-    if (mensagensErro.length > 0) {
+    if (Array.isArray(mensagensErro) && mensagensErro.length > 0) {
       setUplaodMessage(mensagensErro.join("\n"));
-      alert(mensagensErro.join("\n"))
-
-    } else {
-      setUplaodMessage(""); //limpa a mensagem se não houver erro
+      alert(mensagensErro.join("\n"));
+    }else{
+      setUplaodMessage("");
     }
+    // if (mensagensErro.length > 0) {
+    //   setUplaodMessage(mensagensErro.join("\n"));
+    //   alert(mensagensErro.join("\n"));
+    // } else {
+    //   setUplaodMessage("");
+    // }
 
     setFilesByField(prev => ({
       ...prev,
@@ -36,10 +40,9 @@ function Upload_Arqivo() {
     }));
 
     console.log(`Arquivos válidos em ${fileName}:`, arquivosValidos.map(f => f.name));
-  }
+  };
 
-
-  //  Função para enviar os arquivos
+  //API para enviar arquivos para o banckend
   const uploadImg = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -58,9 +61,9 @@ function Upload_Arqivo() {
 
       if (response.ok) {
         const data = await response.json();
-        setResultados(data.resultados); // 👈 Atualiza os dados extraídos
+        setResultados(data.resultados);
         setUplaodMessage('Arquivos enviados com sucesso');
-        console.log("Resposta do backend:", data);
+        console.log("Resposta do backend:", data.resultados);
       } else {
         setUplaodMessage('Erro ao enviar os arquivos.');
         console.error("Erro no upload");
@@ -71,15 +74,12 @@ function Upload_Arqivo() {
     }
   };
 
-
-  //  Função para renderizar campos de upload com cor verde e ícone de check
   const renderUploadField = (label, fieldName) => {
     const hasFiles = filesByField[fieldName].length > 0;
 
     return (
       <div className={styles.uploadContainer}>
         <label htmlFor={fieldName} className={styles.label}>{label}</label>
-
         <label
           htmlFor={fieldName}
           className={`${styles.customUpload} ${hasFiles ? styles.uploaded : ''}`}
@@ -88,7 +88,6 @@ function Upload_Arqivo() {
           <span className={styles.fileNames}>
             {hasFiles ? (
               <>
-                {/* Ícone de check verde */}
                 <svg className={styles.checkIcon} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#28a745">
                   <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414L8.414 15l-4.121-4.121a1 1 0 011.414-1.414L8.414 12.586l7.879-7.879a1 1 0 011.414 0z" clipRule="evenodd" />
                 </svg>
@@ -107,16 +106,15 @@ function Upload_Arqivo() {
           className={styles.hiddenInput}
           {...(fieldName === "comprovante" && { webkitdirectory: "true" })}
         />
-
       </div>
     );
   };
 
+// Renderização do componente 
   return (
     <>
       <NavBar />
       <div className='container'>
-        {/* 👇 Só exibe o formulário se ainda não houver resultados */}
         {!resultados && (
           <div className={styles.uploadWrapper}>
             <form onSubmit={uploadImg}>
@@ -139,38 +137,53 @@ function Upload_Arqivo() {
                 </button>
 
                 {uploadMessage && (
-                  <div className={styles.uploadMessage}>{uploadMessage}
-                  </div>
+                  <div className={styles.uploadMessage}>{uploadMessage}</div>
                 )}
               </div>
             </form>
           </div>
         )}
 
-        {/* 👇 Exibe os resultados quando disponíveis */}
         {resultados && (
           <>
-            <ResultadoTabela resultados={resultados} />
+            <div className={styles.tabBar}>
+              {["extrato", "pendente", "consultor"].map((tipo) => (
+                <button
+                  key={tipo}
+                  className={`${styles.tabButton} ${abaAtiva === tipo ? styles.active : ""}`}
+                  onClick={() => setAbaAtiva(tipo)}
+                >
+                  {tipo.charAt(0).toUpperCase() + tipo.slice(1)}
+                </button>
+              ))}
+            </div>
+
+            <div className={styles.tabContent}>
+              {resultados[abaAtiva]?.map((res, idx) => (
+                <ResultadoTabela key={`${abaAtiva}-${idx}`} resultados={res} />
+              ))}
+            </div>
+
             <button
               className={styles.button}
               onClick={() => {
-                setResultados(null); // limpa os resultados
+                setResultados(null);
                 setFilesByField({
                   extrato: [],
                   comprovante: [],
                   consultor: [],
-                }); // limpa os arquivos
-                setUplaodMessage(''); // limpa a mensagem
+                });
+                setUplaodMessage('');
+                setAbaAtiva("extrato");
               }}
             >
               Novo envio
             </button>
           </>
         )}
-
       </div>
     </>
   );
 }
 
-export default Upload_Arqivo;
+export default Upload_Arquivo;

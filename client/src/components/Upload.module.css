@@ -1,52 +1,63 @@
-container {
-    display: flex;
+/* Layout principal */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
 }
 
+/* Imagens */
 img {
-    width: 150px;
-    height: auto;
-    margin: 5px;
+  max-width: 100%;
+  height: auto;
+  margin: 0.5rem;
 }
 
+/* Área de upload */
 .styleUpload {
-    display: flex;
-    display: inline-block;    /* Faz a div se ajustar ao conteúdo */
-    padding: 10px;    /* Opcional: adiciona espaço interno */
-    border: 1px solid #000;    /* Opcional: borda para visualização */
-    background-color: rgb(217, 217, 217);
+  display: inline-block;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  background-color: #e9ecef;
+  border-radius: 8px;
 }
 
+/* Labels */
 label {
-  /* font-weight: bold; */
   display: block;
-  margin-bottom: 4px;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #333;
 }
 
-
-
-
-/* modelo do css para o comprovante de pagamento */
-
+/* Container de campos de upload */
 .uploadContainer {
   display: flex;
-  flex-direction: column; 
-  gap: 12px;
+  flex-direction: column;
+  gap: 1rem;
 }
 
+/* Label de campo */
 .label {
   font-weight: bold;
-  margin-bottom: 4px;
+  margin-bottom: 0.25rem;
 }
 
+/* Área clicável de upload */
 .customUpload {
   display: flex;
   align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  background-color: #f0f0f0;
-  padding: 10px;
+  gap: 0.75rem;
+  background-color: #f8f9fa;
+  border: 2px dashed #ccc;
+  padding: 1rem;
   border-radius: 6px;
-  border: 1px solid #ccc;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.customUpload:hover {
+  background-color: #e2e6ea;
 }
 
 .customUpload img {
@@ -54,92 +65,56 @@ label {
   height: 24px;
 }
 
-.hiddenInput {
-  display: none;
-}
-
-.button {
-  margin-top: 16px;
-  padding: 8px 16px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.uploadWrapper {
-  max-width: 400px; /* Limita a largura */
-  margin: 40px auto; /* Centraliza vertical e horizontalmente */
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.buttonGroup {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
-.cancelButton {
-  background-color: #ccc;
-  color: #333;
-  border: none;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-
-
-.customUpload {
-  background-color: #f0f0f0;
-  border: 2px dashed #ccc;
-  padding: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
+/* Estado de arquivo enviado */
 .uploaded {
-  background-color: #d4edda; /* verde claro */
+  background-color: #d4edda;
   border-color: #28a745;
   color: #155724;
 }
 
+/* Input invisível */
 .hiddenInput {
   display: none;
 }
 
+/* Botões */
 .buttonGroup {
   display: flex;
   gap: 1rem;
-  margin-top: 1rem;
+  margin-top: 1.5rem;
 }
 
 .button {
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 1.25rem;
   border: none;
   background-color: #007bff;
   color: white;
+  font-weight: 500;
+  border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
+.button:hover {
+  background-color: #0056b3;
+}
+
 .cancelButton {
-  background-color: #ccc;
-  color: #333;
+  background-color: #6c757d;
+  color: white;
 }
 
 .cancelButton:hover {
-  background-color: #999;
+  background-color: #5a6268;
 }
 
+/* Nomes de arquivos */
 .fileNames {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #333;
 }
 
 .checkIcon {
@@ -147,14 +122,54 @@ label {
   height: 20px;
 }
 
-/* message de retorno do servidor */
+/* Mensagem de retorno */
 .uploadMessage {
-  margin-top: 10px;
+  margin-top: 1rem;
   font-weight: bold;
-  color: #28a745; /* verde para sucesso */
+  color: #28a745;
 }
 
-.uploadMessage:has(.error) {
-  color: #dc3545; /* vermelho para erro */
+.uploadMessage.error {
+  color: #dc3545;
 }
 
+/* Wrapper do formulário */
+.uploadWrapper {
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Abas de navegação */
+.tabBar {
+  display: flex;
+  gap: 1rem;
+  margin: 2rem 0 1rem;
+}
+
+.tabButton {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  background-color: #f1f1f1;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.tabButton:hover {
+  background-color: #e0e0e0;
+}
+
+.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.tabContent {
+  margin-top: 1rem;
+  width: 100%;
+}
