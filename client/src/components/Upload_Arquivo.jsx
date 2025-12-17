@@ -147,7 +147,7 @@ function Upload_Arquivo() {
         {resultados && (
           <>
             <div className={styles.tabBar}>
-              {["extrato", "pendente", "consultor"].map((tipo) => (
+              {["extrato", "pendente", "concluído"].map((tipo) => (
                 <button
                   key={tipo}
                   className={`${styles.tabButton} ${abaAtiva === tipo ? styles.active : ""}`}

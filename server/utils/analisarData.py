@@ -1,0 +1,1 @@
+# tarzer os dados extraidos e colocar por consultor, pedendete e concuido

@@ -3,6 +3,7 @@ from werkzeug.utils import secure_filename
 from services.pdf_service import process_pdf
 from services.image_service import process_image
 from services.excel_service import process_excel
+from utils.extractors import extrair_info_texto
 import os
 
 analisar_bp = Blueprint('analisar', __name__)
@@ -32,8 +33,16 @@ def analisar():
             resultado = process_pdf(caminho, filename)
         elif filename.lower().endswith(('.png', '.jpg', '.jpeg')):
             resultado = process_image(caminho, filename)
-        elif filename.lower().endswith(('.xls', '.xlsx')):
-            resultado = process_excel(caminho, filename)
+        elif filename.lower().endswith(('.xls', '.xlsx')): 
+            # campo para decidir se é arquivo do extrato ou consultor venda
+            if campo == "extrato":
+                resultado = process_excel(caminho, filename)
+            elif campo == "consultor":
+                resultado = extrair_info_texto(caminho,filename)
+            else:
+                resultado = process_excel(caminho, filename)  # genérico
+
+          
         else:
             resultado = {
                 "arquivo": filename,
