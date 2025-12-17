@@ -36,7 +36,7 @@ def analisar():
         elif filename.lower().endswith(('.xls', '.xlsx')): 
             # campo para decidir se é arquivo do extrato ou consultor venda
             if campo == "extrato":
-                resultado = process_excel(caminho, filename)
+                resultado = process_excel(caminho, filename) #colocar excel caminho unico
             elif campo == "consultor":
                 resultado = extrair_info_texto(caminho,filename)
             else:
