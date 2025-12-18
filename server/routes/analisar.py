@@ -3,7 +3,7 @@ from werkzeug.utils import secure_filename
 from services.pdf_service import process_pdf
 from services.image_service import process_image
 from services.excel_service import process_excel
-from utils.extractors import extrair_info_texto
+from utils.extractors import comparar_pdf_com_extrato
 import os
 
 analisar_bp = Blueprint('analisar', __name__)
@@ -26,23 +26,35 @@ def analisar():
             arquivos_salvos.append((campo, caminho, filename))  # Salva o caminho para apagar depois
             i += 1
 
-
     # 2️⃣ Etapa 2: processar todos os arquivos
     for campo, caminho, filename in arquivos_salvos:
         if filename.lower().endswith('.pdf'):
             resultado = process_pdf(caminho, filename)
+
         elif filename.lower().endswith(('.png', '.jpg', '.jpeg')):
             resultado = process_image(caminho, filename)
-        elif filename.lower().endswith(('.xls', '.xlsx')): 
-            # campo para decidir se é arquivo do extrato ou consultor venda
-            if campo == "extrato":
-                resultado = process_excel(caminho, filename) #colocar excel caminho unico
-            elif campo == "consultor":
-                resultado = extrair_info_texto(caminho,filename)
-            else:
-                resultado = process_excel(caminho, filename)  # genérico
 
-          
+        elif filename.lower().endswith(('.xls', '.xlsx')):
+            if campo == "extrato":
+                # Extrato deve virar lista de dicts
+                resultado = process_excel(caminho, filename)
+
+            elif campo == "consultor":
+                # Consultor também deve virar lista de dicts
+                comprovantes = process_excel(caminho, filename)
+
+                # Extratos já processados anteriormente
+                extratos = []
+                for item in resultados.get("extrato", []):
+                    if isinstance(item, list):
+                        extratos.extend(item)
+
+                # Agora compara
+                resultado = comparar_pdf_com_extrato(comprovantes, extratos)
+
+            else:
+                resultado = process_excel(caminho, filename)
+
         else:
             resultado = {
                 "arquivo": filename,
@@ -52,7 +64,7 @@ def analisar():
 
         resultados[campo].append(resultado)
 
-   # 3️⃣ Etapa 3: apagar todos os arquivos
+    # 3️⃣ Etapa 3: apagar todos os arquivos
     for _, caminho, _ in arquivos_salvos:
         try:
             os.remove(caminho)

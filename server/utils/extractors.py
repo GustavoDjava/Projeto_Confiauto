@@ -1,49 +1,76 @@
-# ler extrato
-import re
-import spacy
-import pandas as pd
+from collections import defaultdict
 
-nlp = spacy.load("pt_core_news_sm")
-
-def extrair_info_texto(caminho_arquivo: str, filename: str = None):
+def comparar_pdf_com_extrato(comprovantes_pdf, extratos):
     """
-    Lê o conteúdo de um arquivo Excel ou CSV e extrai informações
-    como CPF, CNPJ, datas, valores e entidades nomeadas.
+    Compara lista de comprovantes extraídos de PDFs com dados do extrato.
+    Retorna quais comprovantes batem com o extrato.
     """
+    resultados = []
 
-    # Detecta se é Excel ou CSV
-    if caminho_arquivo.endswith(".xlsx") or caminho_arquivo.endswith(".xls"):
-        df = pd.read_excel(caminho_arquivo)
-    elif caminho_arquivo.endswith(".csv"):
-        df = pd.read_csv(caminho_arquivo)
-    else:
-        raise ValueError("Formato de arquivo não suportado. Use .xlsx ou .csv")
+    for comp in comprovantes_pdf:
+        bateu = False
+        detalhes = []
 
-    # Normaliza colunas para minúsculas
-    df.columns = [str(c).strip().lower() for c in df.columns]
+        for linha in extratos:
+            cond_data = comp.get("data_pagamento") and linha.get("data") and comp["data_pagamento"] == linha["data"]
+            cond_valor = comp.get("valor_pago") and linha.get("valor") and comp["valor_pago"] == linha["valor"]
+            cond_cpf = comp.get("cpf") and linha.get("cpf") and comp["cpf"] == linha["cpf"]
 
-    # Concatena todo conteúdo em texto para regex/NLP
-    texto = " ".join(df.astype(str).apply(lambda x: " ".join(x), axis=1))
+            # garantir que são strings antes de usar lower()
+            nome_comp = comp.get("nome")
+            nome_linha = linha.get("pagante")
+            cond_nome = nome_comp and nome_linha and isinstance(nome_linha, str) and nome_comp.lower() in nome_linha.lower()
 
-    # Expressões regulares
-    regex_info = {
-        "cpf": re.findall(r'\d{3}\.\d{3}\.\d{3}-\d{2}', texto),
-        "cnpj": re.findall(r'\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}', texto),
-        "datas": re.findall(r'\d{2}/\d{2}/\d{4}', texto),
-        "valores": re.findall(r'R?\$?\s?\d{1,3}(?:\.\d{3})*,\d{2}', texto)
-    }
+            if cond_data and cond_valor:
+                bateu = True
+                detalhes.append("Data e valor coincidem")
+            if cond_valor and cond_cpf:
+                bateu = True
+                detalhes.append("Valor e CPF coincidem")
+            if cond_valor and cond_nome:
+                bateu = True
+                detalhes.append("Valor e nome coincidem")
 
-    # NLP com spaCy
-    doc = nlp(texto)
-    entidades = {
-        "nomes": [ent.text for ent in doc.ents if ent.label_ == "PER"],
-        "empresas": [ent.text for ent in doc.ents if ent.label_ == "ORG"],
-        "locais": [ent.text for ent in doc.ents if ent.label_ == "LOC"],
-    }
+        resultados.append({
+            "comprovante": comp,
+            "bateu": bateu,
+            "detalhes": detalhes if detalhes else ["Não encontrado no extrato"]
+        })
 
-    resultado = {**regex_info, **entidades}
+    return resultados
 
-    if filename:
-        resultado["arquivo"] = filename
 
-    return resultado
+def agrupar_por_consultor_associado(resultados):
+    """
+    Agrupa os dados do comparar_pdf_com_extrato por consultor e associado.
+    Retorna um dicionário pronto para exibição.
+    """
+    agrupado = defaultdict(list)
+
+    for r in resultados:
+        comp = r["comprovante"]
+        if r["bateu"]:
+            consultor = comp.get("consultor", "N/A")
+            associado = comp.get("nome") or comp.get("cpf") or "Desconhecido"
+
+            agrupado[consultor].append({
+                "associado": associado,
+                "data": comp.get("data_pagamento", "N/A"),
+                "valor_adesao": comp.get("valor_pago", "N/A"),
+                "detalhes": r["detalhes"]
+            })
+
+    return agrupado
+
+
+def mostrar_no_console(dados_agrupados):
+    """
+    Exibe os dados agrupados por consultor e associado no console.
+    """
+    for consultor, associados in dados_agrupados.items():
+        print(f"\n👩‍💼 Consultor: {consultor}")
+        for assoc in associados:
+            print(f"   - Associado: {assoc['associado']}")
+            print(f"     Data: {assoc['data']}")
+            print(f"     Valor de adesão: {assoc['valor_adesao']}")
+            print(f"     Detalhes: {', '.join(assoc['detalhes'])}")
