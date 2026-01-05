@@ -3,6 +3,8 @@ import styles from './Upload.module.css';
 import NavBar from './NavBar';
 import { validarArquivos } from './fileValidation';
 import ResultadoTabela from './ResultadosTabela';
+import DadosAnalise from './AnalisarBack';
+
 
 function Upload_Arquivo() {
   // Armazena os arquivos selecionados para cada tipo
@@ -146,6 +148,8 @@ function Upload_Arquivo() {
 
         {resultados && (
           <>
+
+          <DadosAnalise/>
             <div className={styles.tabBar}>
               {["extrato", "pendente", "concluído"].map((tipo) => (
                 <button
@@ -163,6 +167,8 @@ function Upload_Arquivo() {
                 <ResultadoTabela key={`${abaAtiva}-${idx}`} resultados={res} />
               ))}
             </div>
+
+ 
 
             <button
               className={styles.button}
