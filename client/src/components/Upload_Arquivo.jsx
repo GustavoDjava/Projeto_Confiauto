@@ -148,8 +148,9 @@ function Upload_Arquivo() {
 
         {resultados && (
           <>
+          {/* Componente que exibe os dados analisados */}
+            <DadosAnalise resultados={resultados} /> 
 
-          <DadosAnalise/>
             <div className={styles.tabBar}>
               {["extrato", "pendente", "concluído"].map((tipo) => (
                 <button
