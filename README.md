@@ -146,7 +146,7 @@ O Flask processa as requisições e retorna as informações de pagamentos, stat
 
 Exemplo:
 
-![Tela inicial do painel administrativo](docs/tela_inicial.png)
+![Imagem Local](<img width="1916" height="914" alt="Captura de tela 2026-01-25 143844" src="https://github.com/user-attachments/assets/dadc4564-519b-4e9b-b54d-225af77ba739" />)/
 
 👨‍💻 Autor
 
@@ -162,10 +162,6 @@ https://github.com/GustavoDjava
 🏷️ Licença
 
 Este projeto é de uso educacional e livre para fins de aprendizado.
-
-⭐ Dica Extra
-
-Você pode adicionar badges no topo do README para deixá-lo mais atrativo:
 
 ![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
 ![Python](https://img.shields.io/badge/python-3.10-blue)
